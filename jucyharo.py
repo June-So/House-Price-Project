@@ -56,7 +56,7 @@ def view_distributions(df,ncols=5):
             df[col].plot(kind="hist",title=col)
     plt.show()
 
-def view_correlation(df,y_colname,ncols=5):
+def view_correlations(df,y_colname,ncols=5,outliers=None):
     """ Pour afficher en une seule fois les corrélations de colonnes par rapport à une même variable en y"""
     # Preparation de la grille
     nrows = np.ceil(df.shape[1]/ncols)
@@ -72,4 +72,7 @@ def view_correlation(df,y_colname,ncols=5):
         elif df[col].dtype in [np.float64,np.int64] :
             plt.subplot(nrows,ncols,count)
             plt.scatter(df[col],df[y_colname])
+            if not outliers is None:
+                is_outliers = df.index.isin(outliers)
+                plt.scatter(df[is_outliers][col],df[is_outliers][y_colname])
             plt.title(col)
